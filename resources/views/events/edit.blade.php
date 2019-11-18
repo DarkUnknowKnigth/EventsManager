@@ -34,7 +34,7 @@
                                     <div class="form-group">
                                         <label for="precio" class="col-sm-1-12 col-form-label">Precio</label>
                                         <div class="col-sm-1-12">
-                                            <input type="number" class="form-control" name="precio" id="precio" placeholder="" value="{{$event->tipo}}">
+                                            <input type="number" class="form-control" name="precio" id="precio" placeholder="" value="{{$event->precio}}">
                                         </div>
                                     </div>
                                 @endif

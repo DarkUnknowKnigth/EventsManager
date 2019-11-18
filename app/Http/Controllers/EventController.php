@@ -22,14 +22,17 @@ class EventController extends Controller
      */
     public function index()
     {
+        #role 1 cliente
+        #role 2 cempleado
+        #role 3 gerente
         if(auth()->user()->role->poder==1){
-            $events= Event::where('cliente_id','=',auth()->user()->id)->orderBy('updated_at','desc')->paginate(15);
+            $events= Event::where('cliente_id','=',auth()->user()->id)->orderBy('updated_at','desc')->paginate(3);
         }
         elseif(auth()->user()->role->poder==2){
-            $events= Event::where('confirmado','=',true)->orderBy('updated_at','desc')->paginate(15);
+            $events= Event::where('confirmado','=',true)->orderBy('updated_at','desc')->paginate(3);
         }
         elseif(auth()->user()->role->poder==3){
-            $events= Event::where('gerente_id','=',auth()->user()->id)->orderBy('updated_at','desc')->paginate(15);
+            $events= Event::where('gerente_id','=',auth()->user()->id)->orderBy('updated_at','desc')->paginate(3);
         }
         else{
             return redirect()->route('welcome')->with([
@@ -60,6 +63,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'fecha'=>'date|required',
             'hora'=>'string|required',
@@ -237,7 +241,7 @@ class EventController extends Controller
         if(!$event->confirmado){
             $event->update(['confirmado'=>true]);
             return redirect()->route('events.index')->with([
-                'message'=>'Se confirmp el evento',
+                'message'=>'Se confirmo el evento',
                 'code'=>'success'
             ]);
         }
@@ -266,7 +270,7 @@ class EventController extends Controller
         else{
             if(count($event->photo->all())>0){
                 foreach($event->photo->all() as $photo){
-                    File::delete( public_path().$photo->path);
+                    File::delete(public_path().$photo->path);
                     $photo->delete();
                 }
                 $event->delete();

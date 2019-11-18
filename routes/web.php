@@ -12,12 +12,12 @@
 */
 
 use App\Package;
-
 Route::get('/', function () {
     return view('welcome')->with([
         'packages'=>Package::paginate()
     ]);
 })->name('welcome');
+# nombre / accion / parametro requerido
 Route::get('events/confirm/{event}', 'EventController@confirm')->name('events.confirm');
 Route::put('events/photos/{event}', 'EventController@photos')->name('events.photos');
 Route::resource('events', 'EventController');

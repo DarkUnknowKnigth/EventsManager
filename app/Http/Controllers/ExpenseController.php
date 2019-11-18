@@ -19,7 +19,7 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        //
+        return Expense::all();
     }
 
     /**
@@ -40,7 +40,13 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'concepto'=>'string|required',
+            'monto'=>'numeric|required',
+            'fecha'=>'date|required'
+        ]);
+        Expense::create($request->all());
+        return redirect()->route('home');
     }
 
     /**
@@ -74,7 +80,13 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, Expense $expense)
     {
-        //
+        $request->validate([
+            'concepto'=>'string',
+            'monto'=>'numeric',
+            'fecha'=>'date'
+        ]);
+        $expense->update($request->all());
+        return $expense;
     }
 
     /**
@@ -85,6 +97,6 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-        //
+        $expense->delete();
     }
 }
