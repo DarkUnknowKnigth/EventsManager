@@ -24,16 +24,10 @@
                                     <td>{{$p->activo?'Si':'No'}}</td>
                                     <td>{{$p->event->tipo}}</td>
                                     <td>
-                                        <ul>
-                                            @if($p->activo)
-                                                <li>
-                                                    <a class="btn btn-warning" href="{{route('packages.edit',$p)}}">Editar</a>
-                                                </li>
-                                            @endif
-                                            <li>
-                                                <a class="btn @if($p->activo) btn-danger  @else btn-success @endif" href="{{route('packages.toggle',$p)}}">{{$p->activo?'Desactivar':'Activar'}}</a>
-                                            </li>
-                                        </ul>
+                                        @if($p->activo)
+                                            <a class="btn btn-warning" href="{{route('packages.edit',$p)}}">Editar</a>
+                                        @endif
+                                        <a class="btn @if($p->activo) btn-danger  @else btn-success @endif" href="{{route('packages.toggle',$p)}}">{{$p->activo?'Desactivar':'Activar'}}</a>
                                     </td>
                                 </tr>
                                 <tr>

@@ -55,7 +55,6 @@
                                 <th>Precio</th>
                                 <th>Evento</th>
                                 <th>Fecha</th>
-                                <th>Responsable</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -66,7 +65,6 @@
                                             <td>${{$p->precio}}</td>
                                             <td>{{$p->event->tipo}}</td>
                                             <td>{{$p->event->fecha}}</td>
-                                            <td>{{$p->event->gerente->email}}</td>
                                         </tr>
                                         <tr>
                                             <td colspan="5">
