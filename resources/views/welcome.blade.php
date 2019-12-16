@@ -14,7 +14,7 @@
 
         <!-- Styles -->
     </head>
-    <body>
+    <body style="background-image:url({{asset('/images/bg.jpg')}})">
         @if (Route::has('login'))
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light">

@@ -30,7 +30,8 @@
                         <tr>
                             <th>Concepto</th>
                             <th>Monto</th>
-                            <th>fecha</th>
+                            <th>Fecha</th>
+                            <th>Evento</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -39,6 +40,7 @@
                                 <td scope="row">{{$expense->concepto}}</td>
                                 <td>{{$expense->monto}}</td>
                                 <td>{{$expense->fecha}}</td>
+                                <td>{{$expense->event->tipo}}</td>
                             </tr>
                             @empty
                             <tr>

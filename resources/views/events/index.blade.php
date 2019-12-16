@@ -26,7 +26,7 @@
                                     <p>
                                       Precio: ${{$e->precio?'$'.$e->precio:'No asignado'}}
                                     </p>
-                                    <div class="btn-group">
+                                    <div class="row">
                                         <form action="{{route('events.photos',$e)}}" method="POST" enctype="multipart/form-data">
                                             @method('put')
                                             @csrf
@@ -36,7 +36,7 @@
                                         <a class="btn btn-success" href="{{route('events.show',$e)}}" style="max-height:37px;">Ver</a>
                                         <a class="btn btn-warning" href="{{route('payments.create',$e)}}" style="max-height:37px;">Abonar</a>
                                     </div>
-                                    <div class="btn-group">
+                                    <div class="row">
                                         @foreach ($e->photo->all() as $photo)
                                             <a class="nav-link" target="_blank" href="{{env('APP_URL').$photo->path}}">Foto({{$loop->iteration}})</a>
                                             <form action="{{route('photos.destroy',$photo)}}" method="POST">
@@ -67,7 +67,7 @@
                                     <p>
                                     {{$e->precio?'$'.$e->precio:'No asignado'}}
                                     </p>
-                                        <div class="btn-group">
+                                        <div class="row">
                                             <form action="{{route('events.photos',$e)}}" method="POST" enctype="multipart/form-data">
                                                 @method('put')
                                                 @csrf
@@ -93,7 +93,7 @@
                                                 <a class="btn btn-success" href="{{route('events.confirm',$e)}}" style="max-height:37px;">confirmar</a>
                                             @endif
                                         </div>
-                                    <div class="btn-group">
+                                    <div class="row">
                                         @foreach ($e->photo->all() as $photo)
                                             <a class="nav-link" target="_blank" href="{{env('APP_URL').$photo->path}}">Foto({{$loop->iteration}})</a>
                                             <form action="{{route('photos.destroy',$photo)}}" method="POST">

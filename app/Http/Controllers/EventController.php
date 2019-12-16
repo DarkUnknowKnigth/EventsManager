@@ -217,7 +217,7 @@ class EventController extends Controller
         ]);
         if(auth()->user()->role->poder==1){
             $event->update($request->except(['precio','confirmado']));
-            return response()->json([
+            return redirect()->route('events.index')->with([
                 'message'=>'Evento actualizado',
                 'code'=>'success'
             ]);
@@ -225,7 +225,7 @@ class EventController extends Controller
             $request['confirmado']=false;
             $request['gerente_id']=auth()->user()->id;
             $event->update($request->except(['fecha','hora','tipo']));
-            return response()->json([
+            return redirect()->route('events.index')->with([
                 'message'=>'Se asigno el precio al evento',
                 'code'=>'success'
             ]);

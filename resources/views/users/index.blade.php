@@ -21,31 +21,25 @@
                                     <td scope="row">{{$user->name}}</td>
                                     <td>{{$user->email}}</td>
                                     <td>{{$user->role->nombre}}</td>
-                                    <th>
+                                    <td>
                                         @if(auth()->user()->role->poder==3)
-                                            <ul>
-                                                <li>
-                                                    <a class="btn btn-warning" href="{{route('users.edit',$user)}}">Editar</a>
-                                                </li>
-                                                <li>
-                                                    <form action="{{route('users.destroy',$user)}}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger" type="submit">Eliminar</button>
-                                                    </form>
-                                                </li>
-                                                <li>
-                                                    <form action="{{route('users.password',$user)}}" method="POST">
-                                                        @csrf
-                                                        @method('put')
-                                                        <div class="form-group">
-                                                          <label for="password">Restablecer contraseña</label>
-                                                          <input type="password" class="form-control" name="password" id="password" placeholder="nueva contraseña">
-                                                          <button type="submit">Restablecer</button>
-                                                        </div>
-                                                    </form>
-                                                </li>
-                                            </ul>
+                                        <div class="btn-group">
+                                            <a class="btn btn-warning" href="{{route('users.edit',$user)}}">Editar</a>
+
+                                            <form action="{{route('users.destroy',$user)}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger" type="submit">Eliminar</button>
+                                            </form>
+                                        </div>
+                                        <div class="btn-group">
+                                            <form action="{{route('users.password',$user)}}" method="POST">
+                                                @csrf
+                                                @method('put')
+                                                <input type="password" class="form-control" name="password" id="password" placeholder="nueva contraseña">
+                                                <button style="width:100%" class="btn btn-danger" type="submit">Restablecer</button>
+                                            </form>
+                                        </div>
                                         @endif
                                     </th>
                                 </tr>
