@@ -43,7 +43,8 @@ class ExpenseController extends Controller
         $request->validate([
             'concepto'=>'string|required',
             'monto'=>'numeric|required',
-            'fecha'=>'date|required'
+            'fecha'=>'date|required',
+            'event_id'=>'numeric|required'
         ]);
         Expense::create($request->all());
         return redirect()->route('home');
@@ -83,7 +84,7 @@ class ExpenseController extends Controller
         $request->validate([
             'concepto'=>'string',
             'monto'=>'numeric',
-            'fecha'=>'date'
+            'fecha'=>'date',
         ]);
         $expense->update($request->all());
         return $expense;

@@ -18,6 +18,7 @@ class CreateExpensesTable extends Migration
             $table->string('concepto');
             $table->float('monto');
             $table->date('fecha');
+            $table->unsignedInteger('event_id')->nullable();
             $table->timestamps();
         });
     }

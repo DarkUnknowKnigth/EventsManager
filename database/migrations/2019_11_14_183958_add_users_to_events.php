@@ -15,11 +15,11 @@ class AddUsersToEvents extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             $table->unsignedBigInteger('cliente_id');
-            $table->foreign('cliente_id')->references('id')->on('users');
+            // $table->foreign('cliente_id')->references('id')->on('users');
             $table->unsignedBigInteger('gerente_id')->nullable();
-            $table->foreign('gerente_id')->references('id')->on('users');
+            // $table->foreign('gerente_id')->references('id')->on('users');
             $table->unsignedBigInteger('package_id')->nullable();
-            $table->foreign('package_id')->references('id')->on('packages');
+            // $table->foreign('package_id')->references('id')->on('packages');
         });
     }
 

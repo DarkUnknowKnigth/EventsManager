@@ -15,9 +15,9 @@ class AddEventsUsersToPhotos extends Migration
     {
         Schema::table('photos', function (Blueprint $table) {
             $table->unsignedBigInteger('event_id');
-            $table->foreign('event_id')->references('id')->on('events');
+            // $table->foreign('event_id')->references('id')->on('events');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

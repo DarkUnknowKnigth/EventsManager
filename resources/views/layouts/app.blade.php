@@ -128,11 +128,11 @@
                                             <div class="form-group">
                                                 <label for="password">Restablecer contraseña</label>
                                                 <input type="password" class="form-control" name="password" id="password" placeholder="nueva contraseña">
-                                                <button type="submit">Restablecer</button>
                                             </div>
+                                            <button class="btn btn-danger" style="width:100%" type="submit">Restablecer</button>
                                         </form>
                                     </div>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item btn btn-primary" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                        Cerrar sesion

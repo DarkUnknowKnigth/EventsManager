@@ -1,136 +1,117 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="card">
         <div class="card-header">
             <h1>Mis eventos</h1>
         </div>
         <div class="card-body">
-            <table class="table table-striped table-inverse table-responsive">
-                <thead class="thead-inverse">
+           <div class="row">
+                @forelse ($events as $e)
+                    @if(auth()->user()->role->poder==2 && $e->confirmado)
+                        <div class="col-4">
+                            <div class="row">
+                                @foreach ($e->photo->all() as $photo)
+                                   <div class="col-2">
+                                        <img src="{{env('APP_URL').$photo->path}}" width="100px">
+                                   </div>
+                                @endforeach
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{$e->tipo}} <span class="badge @if($e->confirmado) badge-success @else bagge-danger @endif">{{$e->confirmado?'✅':'❎'}}</span></h4>
+                                    <p class="card-text">{{$e->fecha}}, {{$e->hora}}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <p>
+                                      Precio: ${{$e->precio?'$'.$e->precio:'No asignado'}}
+                                    </p>
+                                    <div class="btn-group">
+                                        <form action="{{route('events.photos',$e)}}" method="POST" enctype="multipart/form-data">
+                                            @method('put')
+                                            @csrf
+                                            <input type="file" draggable="true" name="foto" id="foto" required>
+                                            <button class="btn btn-primary" type="submit">Subir foto</button>
+                                        </form>
+                                        <a class="btn btn-success" href="{{route('events.show',$e)}}" style="max-height:37px;">Ver</a>
+                                        <a class="btn btn-warning" href="{{route('payments.create',$e)}}" style="max-height:37px;">Abonar</a>
+                                    </div>
+                                    <div class="btn-group">
+                                        @foreach ($e->photo->all() as $photo)
+                                            <a class="nav-link" target="_blank" href="{{env('APP_URL').$photo->path}}">Foto({{$loop->iteration}})</a>
+                                            <form action="{{route('photos.destroy',$photo)}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger" type="submit">x</button>
+                                            </form>
+                                        @endforeach
+                                    </div
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="col-4">
+                            <div class="row">
+                                @foreach ($e->photo->all() as $photo)
+                                <div class="col-2">
+                                        <img src="{{env('APP_URL').$photo->path}}" width="100px">
+                                </div>
+                                @endforeach
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{$e->tipo}} <span class="badge @if($e->confirmado) badge-success @else bagge-danger @endif">{{$e->confirmado?'✅':'❎'}}</span></h4>
+                                    <p class="card-text">{{$e->fecha}}, {{$e->hora}}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <p>
+                                    {{$e->precio?'$'.$e->precio:'No asignado'}}
+                                    </p>
+                                    <div class="btn-group">
+                                        <form action="{{route('events.photos',$e)}}" method="POST" enctype="multipart/form-data">
+                                            @method('put')
+                                            @csrf
+                                            <input type="file" draggable="true" name="foto" id="foto" required>
+                                            <button class="btn btn-primary" type="submit">Subir foto</button>
+                                        </form>
+                                        <a class="btn btn-primary" href="{{route('events.show',$e)}}" style="max-height:37px;">Ver</a>
+                                        @if((auth()->user()->role->poder==3 || auth()->user()->role->poder==1) && !$e->confirmado)
+                                            <a class="btn btn-dark" href="{{route('events.edit',$e)}}" style="max-height:37px;">Editar</a>
+                                            <form action="{{route('events.destroy',$e)}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger">Eliminar</button>
+                                            </form>
+                                        @endif
+
+                                        @if((auth()->user()->role->poder==3 || auth()->user()->role->poder==2) && $e->confirmado)
+                                            <a class="btn btn-warning" href="{{route('payments.create',$e)}}" style="max-height:37px;">Abonar</a>
+                                        @endif
+
+                                        @if(auth()->user()->role->poder==3 && !$e->confirmado)
+                                            <a class="btn btn-success" href="{{route('events.confirm',$e)}}" style="max-height:37px;">confirmar</a>
+                                        @endif
+                                    </div>
+                                    <div class="btn-group">
+                                        @foreach ($e->photo->all() as $photo)
+                                            <a class="nav-link" target="_blank" href="{{env('APP_URL').$photo->path}}">Foto({{$loop->iteration}})</a>
+                                            <form action="{{route('photos.destroy',$photo)}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger" type="submit">x</button>
+                                            </form>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @empty
                     <tr>
-                        <th>Tipo</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Precio</th>
-                        <th>Confirmado</th>
-                        <th>Fotos</th>
-                        <th>Acciones</th>
+                        <td colspan="5">No hay eventos</td>
                     </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($events as $e)
-                            @if(auth()->user()->role->poder==2 && $e->confirmado)
-                                <tr>
-                                    <td scope="row">{{$e->tipo}}</td>
-                                    <td>{{$e->fecha}}</td>
-                                    <td>{{$e->hora}}</td>
-                                    <td>{{$e->precio?'$'.$e->precio:'No asignado'}}</td>
-                                    <td>{{$e->confirmado?'Si':'No'}}</td>
-                                    <td>
-                                        <ul>
-                                            @foreach ($e->photo->all() as $photo)
-                                                <li>
-                                                    <div class="btn-group btn-group-sm">
-                                                        <a class="btn btn-primary" target="_blank" href="{{env('APP_URL').$photo->path}}">Foto({{$loop->iteration}})</a>
-                                                        <form action="{{route('photos.destroy',$photo)}}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-danger" type="submit">x</button>
-                                                        </form>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <ul>
-                                            <li>
-                                                <form action="{{route('events.photos',$e)}}" method="POST" enctype="multipart/form-data">
-                                                    @method('put')
-                                                    @csrf
-                                                    <div class="form-control-file">
-                                                        <input class="btn btn-secondery" type="file" draggable="true" name="foto" id="foto" required>
-                                                        <button class="btn btn-primary" type="submit">Subir foto</button>
-                                                    </div>
-                                                </form>
-                                            </li>
-                                            <li>
-                                                <a class="btn btn-success" href="{{route('events.show',$e)}}">Ver</a>
-                                            </li>
-                                            <li><a class="btn btn-warning" href="{{route('payments.create',$e)}}">Abonar</a></li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td scope="row">{{$e->tipo}}</td>
-                                    <td>{{$e->fecha}}</td>
-                                    <td>{{$e->hora}}</td>
-                                    <td>{{$e->precio?'$'.$e->precio:'No asignado'}}</td>
-                                    <td>{{$e->confirmado?'Si':'No'}}</td>
-                                    <td>
-                                        <ul>
-                                            @foreach ($e->photo->all() as $photo)
-                                            <li>
-                                                <div class="btn-group-sm">
-                                                    <a class="btn btn-primary" target="_blank" href="{{env('APP_URL').$photo->path}}">Foto({{$loop->iteration}})</a>
-                                                    <form action="{{route('photos.destroy',$photo)}}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger" type="submit">x</button>
-                                                    </form>
-                                                </div>
-                                            </li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <ul>
-                                            <li>
-                                                <form action="{{route('events.photos',$e)}}" method="POST" enctype="multipart/form-data">
-                                                    @method('put')
-                                                    @csrf
-                                                    <div class="form-group">
-                                                    <input type="file" class="form-control-file" draggable="true" name="foto" id="foto" required>
-                                                    <button class="btn btn-primary form-control" type="submit">Subir foto</button>
-                                                    </div>
-                                                </form>
-                                            </li>
-                                            <li>
-                                                <a class="btn btn-primary" href="{{route('events.show',$e)}}">Ver</a>
-                                            </li>
-                                            @if((auth()->user()->role->poder==3 || auth()->user()->role->poder==1) && !$e->confirmado)
-                                                <li>
-                                                    <a class="btn btn-dark" href="{{route('events.edit',$e)}}">Editar</a>
-                                                </li>
-                                                <li>
-                                                    <form action="{{route('events.destroy',$e)}}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger">Eliminar</button>
-                                                    </form>
-                                                </li>
-                                            @endif
-                                            @if((auth()->user()->role->poder==3 || auth()->user()->role->poder==2) && $e->confirmado)
-                                                <li><a class="btn btn-warning" href="{{route('payments.create',$e)}}">Abonar</a></li>
-                                            @endif
-                                            @if(auth()->user()->role->poder==3 && !$e->confirmado)
-                                                <li>
-                                                    <a class="btn btn-success" href="{{route('events.confirm',$e)}}">confirmar</a>
-                                                </li>
-                                            @endif
-                                        </ul>
-                                    </td>
-                                </tr>
-                            @endif
-                        @empty
-                            <tr>
-                                <td colspan="5">No hay eventos</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-            </table>
+                @endforelse
+           </div>
         </div>
     </div>
     {{$events->links()}}

@@ -22,4 +22,7 @@ class Event extends Model
     public function photo(){
         return $this->hasMany('App\Photo');
     }
+    public function expense(){
+        return $this->hasOne('App\Expense');
+    }
 }

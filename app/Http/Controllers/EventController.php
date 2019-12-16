@@ -63,7 +63,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'fecha'=>'date|required',
             'hora'=>'string|required',
@@ -77,12 +76,12 @@ class EventController extends Controller
                 'cliente_id'=>auth()->user()->id,
                 'confirmado'=>false
             ]);
-            return redirect()->route('events.index')->with([
+            return response()->json([
                 'message'=>'Se creo el evento',
                 'code'=>'success'
             ]);
         }else{
-            return redirect()->route('welcome')->with([
+            return response()->json([
                 'message'=>'No puedes crear un evento, no eres cliente >:V',
                 'code'=>'error'
             ]);
@@ -218,7 +217,7 @@ class EventController extends Controller
         ]);
         if(auth()->user()->role->poder==1){
             $event->update($request->except(['precio','confirmado']));
-            return redirect()->route('events.index')->with([
+            return response()->json([
                 'message'=>'Evento actualizado',
                 'code'=>'success'
             ]);
@@ -226,7 +225,7 @@ class EventController extends Controller
             $request['confirmado']=false;
             $request['gerente_id']=auth()->user()->id;
             $event->update($request->except(['fecha','hora','tipo']));
-            return redirect()->route('events.index')->with([
+            return response()->json([
                 'message'=>'Se asigno el precio al evento',
                 'code'=>'success'
             ]);
@@ -262,7 +261,7 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         if($event->confirmado){
-            return redirect()->route('events.index')->with([
+            return response()->json([
                 'message'=>'No se puedo hacer esto, ya esta confimado >:V',
                 'code'=>'error'
             ]);
@@ -274,14 +273,14 @@ class EventController extends Controller
                     $photo->delete();
                 }
                 $event->delete();
-                return redirect()->route('events.index')->with([
+                return response()->json([
                     'message'=>'Evento eliminado, junto con las fotos',
                     'code'=>'success'
                 ]);
             }
             else{
                 $event->delete();
-                return redirect()->route('events.index')->with([
+                return response()->json([
                     'message'=>'Evento eliminado',
                     'code'=>'success'
                 ]);
