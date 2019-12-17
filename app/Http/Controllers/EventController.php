@@ -261,7 +261,7 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         if($event->confirmado){
-            return response()->json([
+            return redirect()->route('events.index')->with([
                 'message'=>'No se puedo hacer esto, ya esta confimado >:V',
                 'code'=>'error'
             ]);
@@ -273,14 +273,14 @@ class EventController extends Controller
                     $photo->delete();
                 }
                 $event->delete();
-                return response()->json([
+                return redirect()->route('events.index')->with([
                     'message'=>'Evento eliminado, junto con las fotos',
                     'code'=>'success'
                 ]);
             }
             else{
                 $event->delete();
-                return response()->json([
+                return redirect()->route('events.index')->with([
                     'message'=>'Evento eliminado',
                     'code'=>'success'
                 ]);
