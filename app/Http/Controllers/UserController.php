@@ -126,4 +126,22 @@ class UserController extends Controller
             ]);
         }
     }
+    public function store(Request $request){
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role_id'=>['numeric','required']
+        ]);
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role_id'=>$request->role_id
+        ]);
+        return redirect()->route('users.index')->with([
+            'message'=>'Usuario creado',
+            'code'=>'success'
+        ]);
+    }
 }
